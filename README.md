@@ -1,81 +1,115 @@
-# CompGraph
+# constraint-builder: Zero-Knowledge Constraint System Builder for Rust
 
-CompGraph is a Rust library for building and evaluating computational graphs. It provides a flexible and efficient way to construct graphs with nodes related by addition, multiplication, and custom operations.
+## Overview
+
+`constraint-builder` is a Rust library that provides tooling for building constraint systems commonly used in zero-knowledge proof applications. It allows developers to construct computational graphs with mathematical operations and constraints that can be used as the foundation for ZK proofs.
 
 ## Features
 
-- Create computational graphs with nodes representing u32 values
-- Support for constant, input, and derived nodes
-- Addition and multiplication operations
-- Custom operations through a flexible hinting system
-- Equality constraints between nodes
-- Parallel evaluation of the graph using Rayon
-- Thread-safe operations on node values
+- Create computational graphs with various mathematical operations
+- Define relationships between nodes with constraints
+- Execute computations in proper dependency order
+- Verify that constraints between nodes are satisfied
+- Support for providing hints to guide computation
 
-## Usage
-
-Here's an example of how to use CompGraph to represent and evaluate the function f(a) = (a + 1) / 8:
+## Usage Example
 
 ```rust
-use comp_graph::CompGraph;
+use constraint_builder::comp_graph::CompGraph;
 use std::collections::HashMap;
 
 fn main() {
+    // Create a new computational graph
     let mut graph = CompGraph::new();
 
-    // Define the graph structure
-    let a = graph.init();
-    let one = graph.constant(1);
-    let b = graph.add(a, one);
-    let c = graph.hint(b, |val| Ok(val / 8));
-    let eight = graph.constant(8);
-    let c_times_8 = graph.mul(c, eight);
+    // Initialize variables and operations
+    let x = graph.init();                    // Create an input variable
+    let x_squared = graph.mul(x, x);         // x^2
+    let five = graph.constant(5);            // Constant value 5
+    let x_squared_plus_5 = graph.add(x_squared, five); // x^2 + 5
+    let result = graph.add(x_squared_plus_5, x);       // x^2 + 5 + x
 
-    // Assert the constraint: b == c * 8
-    graph.assert_equal(b, c_times_8);
+    // Set input values
+    let mut input_nodes = HashMap::new();
+    input_nodes.insert(x, 2);
 
-    // Evaluate the graph
-    let mut inputs = HashMap::new();
-    inputs.insert(a, 7); // a = 7
-    graph.fill_nodes(inputs);
+    // Compute results
+    graph.fill_nodes(input_nodes);
 
-    // Check constraints and get result
+    // Verify constraints
     assert!(graph.check_constraints());
-    println!("f(7) = {}", graph.nodes[&c].get_value().unwrap()); // Should print 1
+
+    // Access the final result
+    let final_value = graph.get_value(result).unwrap();
+    println!("Result: {}", final_value);  // Should output: Result: 11 (2^2 + 5 + 2)
 }
 ```
 
-## Concepts
+## API Documentation
 
-Building a computational graph library like CompGraph involves several key concepts:
+### `CompGraph`
 
-1. **Graph Structure**: The computational graph is represented as a directed acyclic graph (DAG) where nodes represent values or operations, and edges represent data flow.
+The main structure representing a computational graph.
 
-2. **Node Types**:
-   - Constant nodes: Represent fixed values
-   - Input nodes: Represent variable inputs to the computation
-   - Derived nodes: Represent results of operations on other nodes
+#### Methods
 
-3. **Operations**: Basic arithmetic operations (addition, multiplication) are implemented as ways to create new derived nodes from existing nodes.
+- `new() -> Self`: Create a new empty computational graph
+- `init() -> usize`: Create a new input node and return its ID
+- `constant(value: u32) -> usize`: Create a constant node with a fixed value
+- `add(a: usize, b: usize) -> usize`: Create an addition node that adds the values of nodes a and b
+- `mul(a: usize, b: usize) -> usize`: Create a multiplication node that multiplies the values of nodes a and b
+- `fill_nodes(inputs: HashMap<usize, u32>) -> Result<(), String>`: Fill the graph with input values and compute all node values
+- `check_constraints() -> bool`: Check if all constraints between nodes are satisfied
+- `get_value(node_id: usize) -> Option<u32>`: Get the computed value of a node
 
-4. **Constraints**: Equality constraints between nodes can be asserted and later checked for validity.
+### `Node`
 
-5. **Graph Evaluation**: The process of assigning concrete values to input nodes and propagating these values through the graph to compute the values of all derived nodes.
+Represents a single node in the computational graph.
 
-6. **Hinting**: A mechanism to introduce custom operations or external computations into the graph structure.
+## Installation
 
-7. **Parallelism**: Evaluation of independent nodes can be parallelized to improve performance on multi-core systems.
+Since this library is not yet published to crates.io, you can include it in your project by adding it to your `Cargo.toml` as a Git dependency:
 
-8. **Thread Safety**: When parallelizing computations, ensure that shared data structures are accessed in a thread-safe manner.
+```toml
+[dependencies]
+constraint-builder = { git = "https://github.com/yourusername/constraint-builder.git" }
+```
 
-9. **Topological Ordering**: Nodes are evaluated in an order that respects their dependencies, which can be achieved by assigning levels to nodes based on their position in the graph.
+Alternatively, clone the repository and use a path dependency:
 
-Understanding these concepts is crucial for implementing and extending a computational graph library like CompGraph.
+```toml
+[dependencies]
+constraint-builder = { path = "../path/to/constraint-builder" }
+```
 
-## Contributing
+## Building and Testing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/constraint-builder.git
+cd constraint-builder
+
+# Build the library
+cargo build
+
+# Run tests
+cargo test
+
+# Run the example
+cargo run --example simple_expression
+```
+
+## Use Cases
+
+- Building constraint systems for zero-knowledge proofs
+- Constructing arithmetic circuits for ZK-SNARKs
+- Modeling and verifying relationships in cryptographic protocols
+- Creating and validating witness calculations
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+MIT License
+
+## Contributing
+
+This is an early-stage project. Contributions, suggestions, and feedback are welcome!

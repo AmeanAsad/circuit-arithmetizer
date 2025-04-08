@@ -14,5 +14,5 @@ fn main() {
     graph.fill_nodes(input_nodes);
 
     assert!(graph.check_constraints());
-    println!("Constraints Satisfied!");
+    println!("Constraints Satisfied");
 }

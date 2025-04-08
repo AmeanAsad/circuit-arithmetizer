@@ -360,7 +360,7 @@ impl CompGraph {
         })
     }
 
-    /// An API for hinting values that allows you to perform operations
+    /// An API for hinting values that allows enables performing operations
     /// like division or computing square roots.
     ///
     /// # Parameters
