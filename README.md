@@ -1,8 +1,6 @@
-# constraint-builder: Zero-Knowledge Constraint System Builder for Rust
+# constraint-builder: A simple computational graph builder for constraint checking. 
 
 ## Overview
-
-`constraint-builder` is a Rust library that provides tooling for building constraint systems commonly used in zero-knowledge proof applications. It allows developers to construct computational graphs with mathematical operations and constraints that can be used as the foundation for ZK proofs.
 
 ## Features
 
