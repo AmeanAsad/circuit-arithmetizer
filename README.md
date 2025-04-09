@@ -1,7 +1,5 @@
 # constraint-builder: A simple computational graph builder for constraint checking. 
 
-## Overview
-
 ## Features
 
 - Create computational graphs with various mathematical operations
