@@ -1,22 +1,14 @@
 # constraint-builder: A simple computational graph builder for constraint checking.
 
+## Overview
+
+This library uses computational graphs for building, evaluating, and verifying constraint systems. It has applications in various domains including:
+
 - Zero-knowledge proof systems
 - Circuit-based cryptographic protocols
 - Arithmetic circuit modeling
 - Symbolic computation and verification
 - Constraint satisfaction problems
-
-At its core, this library allows you to represent computations as a directed acyclic graph (DAG) where nodes represent values and operations, while enforcing mathematical relationships through constraints.
-
-## Key Features
-
-- **Intuitive Graph Construction**: Create input nodes, constants, and complex expressions with simple API calls
-- **Parallelized Evaluation**: Efficiently compute node values in topological order using multiple threads
-- **Constraint Verification**: Define and enforce equality constraints between arbitrary nodes
-- **Hint Mechanism**: Bridge operations not directly expressible as arithmetic circuits (e.g., division, square roots)
-- **Level-based Processing**: Automatically organizes computation into dependency levels for efficient evaluation
-- **Robust Error Handling**: Detailed error reporting for constraint violations and computation failures
-- **Thread-safe Implementation**: Safe to use in concurrent environments
 
 ## How It Works
 
@@ -39,18 +31,11 @@ The computational graph is built around the following core concepts:
 
 ## Installation
 
-Add this to your `Cargo.toml`:
+This isn't published on crates yet, so only installation option is directly through git.
 
 ```toml
 [dependencies]
-computational_graph = "0.1.0"
-```
-
-Or use it directly from the repository:
-
-```toml
-[dependencies]
-computational_graph = { git = "https://github.com/yourusername/computational_graph" }
+computational_graph = { git = "https://github.com/ameanasad/computational_graph" }
 ```
 
 ## Usage Examples
