@@ -1,4 +1,4 @@
-#CompGraph: A simple computational graph builder for circuit evaluation and constraint checking
+# CompGraph: A simple computational graph builder for circuit evaluation and constraint checking
 
 ## Overview
 
