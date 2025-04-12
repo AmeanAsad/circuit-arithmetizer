@@ -35,7 +35,7 @@ This isn't published on crates yet, so only installation option is directly thro
 
 ```toml
 [dependencies]
-computational_graph = { git = "https://github.com/ameanasad/computational_graph" }
+comp_graph = { git = "https://github.com/ameanasad/comp_graph" }
 ```
 
 ## Usage Examples
